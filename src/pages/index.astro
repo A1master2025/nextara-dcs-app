@@ -1,4 +1,5 @@
 ---
+import TelemetryInit from '../components/TelemetryInit.astro';
 ---
 
 <html lang="en">
@@ -11,11 +12,6 @@
       // DIOS foundation: always have a dataLayer available
       window.dataLayer = window.dataLayer || [];
     </script>
-
-    <script type="module">
-      import { initConsentFoundation } from "../lib/consent";
-      initConsentFoundation();
-    </script>
   </head>
 
   <body>
@@ -25,6 +21,7 @@
 
       <button data-nt-event="cta_primary">Primary CTA</button>
     </main>
-   
+    
+    <TelemetryInit />
   </body>
 </html>
