@@ -10,7 +10,7 @@ import TelemetryInit from '../components/TelemetryInit.astro';
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>NexTara DCS</title>
 
     <!-- Google Tag Manager -->
     <script>
@@ -26,6 +26,11 @@ import TelemetryInit from '../components/TelemetryInit.astro';
       })(window, document, "script", "dataLayer", "GTM-N6HDR6L7");
     </script>
     <!-- End Google Tag Manager -->
+
+    <script>
+      // DIOS foundation: always have a dataLayer available
+      window.dataLayer = window.dataLayer || [];
+    </script>
   </head>
 
   <body>
@@ -40,6 +45,8 @@ import TelemetryInit from '../components/TelemetryInit.astro';
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-<slot />
+    <slot />
+    
     <TelemetryInit />
   </body>
+</html>
