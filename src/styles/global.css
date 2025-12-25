@@ -193,3 +193,185 @@ a:focus-visible {
 .page-pad-top {
   padding-top: 3rem;
 }
+
+/* =========================================================
+   Tier 2: DCS Diagnostic — Scoped Styles
+   APPEND to end of global.css
+   All selectors use .tier2-* prefix (no global utilities)
+   ========================================================= */
+
+.tier2-main {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.tier2-container {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.tier2-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  background-color: var(--brand-surface);
+}
+
+.tier2-section--alt {
+  background-color: var(--brand-surface-muted);
+}
+
+.tier2-section--cta {
+  text-align: center;
+  background-color: var(--brand-primary);
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.tier2-h1 {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  color: var(--brand-primary);
+  margin-bottom: 1.5rem;
+}
+
+.tier2-h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  color: var(--brand-primary);
+  margin-bottom: 1.25rem;
+}
+
+.tier2-section--cta .tier2-h2 {
+  color: var(--brand-surface);
+}
+
+.tier2-h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.tier2-lead {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.tier2-section--cta .tier2-lead {
+  color: var(--brand-surface);
+  opacity: 0.9;
+}
+
+.tier2-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.tier2-list li {
+  position: relative;
+  padding-left: 1.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  line-height: var(--leading-normal);
+}
+
+.tier2-list--dashes li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--action-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.tier2-list--checks li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--action-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.tier2-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .tier2-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.tier2-card {
+  padding: 1.5rem;
+  background-color: var(--brand-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+}
+
+.tier2-section--alt .tier2-card {
+  background-color: var(--brand-surface);
+}
+
+.tier2-card--accent {
+  background-color: var(--brand-surface-muted);
+  border: none;
+  border-left: 3px solid var(--action-primary);
+  border-radius: 0;
+}
+
+.tier2-btn {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: inherit;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  color: var(--brand-primary);
+  background-color: var(--brand-surface);
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.tier2-btn:hover {
+  background-color: var(--brand-surface-muted);
+}
+
+.tier2-btn:focus-visible {
+  outline: 2px solid var(--brand-surface);
+  outline-offset: 2px;
+}
+
+.tier2-note {
+  margin-top: 1rem;
+  font-size: var(--text-sm);
+  color: var(--brand-surface);
+  opacity: 0.8;
+}
+
+.tier2-note--small {
+  margin-top: 0.5rem;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.tier2-section a:focus-visible,
+.tier2-section button:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}

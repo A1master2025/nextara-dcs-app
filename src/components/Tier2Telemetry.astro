@@ -1,0 +1,187 @@
+---
+/**
+ * Tier2Telemetry.astro
+ *
+ * DIOS telemetry for DCS Diagnostic page (Tier 2).
+ * FAIL-CLOSED: If nt_system_ready is not detected, NO Tier 2 events emit.
+ *
+ * Depends on:
+ * - src/components/TelemetryInit.astro setting window.__NT_SYSTEM_READY_EMITTED__ and pushing nt_system_ready
+ */
+---
+
+<script>
+  (function () {
+    'use strict';
+
+    // Prevent double-init (Astro can hydrate multiple times in edge cases)
+    if (window.__NT_TIER2_TELEMETRY_INIT__) return;
+    window.__NT_TIER2_TELEMETRY_INIT__ = true;
+
+    window.dataLayer = window.dataLayer || [];
+
+    var emitted = {};        // one-time events
+    var scrolled = {};       // scroll buckets
+    var BUCKETS = [25, 50, 75, 90];
+    var DEBUG = window.location.search.indexOf('nt_debug=1') > -1;
+
+    function log(msg, data) {
+      if (DEBUG) console.log('[DIOS Tier2]', msg, data || '');
+    }
+
+    function emit(ev, params) {
+      if (emitted[ev]) {
+        log('BLOCK (note: already emitted): ' + ev);
+        return;
+      }
+      emitted[ev] = true;
+
+      var payload = { event: ev };
+      if (params) {
+        for (var k in params) {
+          if (Object.prototype.hasOwnProperty.call(params, k)) {
+            payload[k] = params[k];
+          }
+        }
+      }
+
+      window.dataLayer.push(payload);
+      log('EMIT: ' + ev, payload);
+    }
+
+    function emitScroll(bucket) {
+      if (scrolled[bucket]) return;
+      scrolled[bucket] = true;
+
+      var payload = {
+        event: 'nt_scroll_depth',
+        depth_bucket: bucket,
+        page_path: window.location.pathname
+      };
+
+      window.dataLayer.push(payload);
+      log('EMIT: nt_scroll_depth', payload);
+    }
+
+    // Strict wait: Tier 2 telemetry MUST NOT emit unless system ready flag is observed
+    function waitForSystemReady(cb) {
+      if (window.__NT_SYSTEM_READY_EMITTED__) {
+        log('system_ready already detected');
+        requestAnimationFrame(cb);
+        return;
+      }
+
+      var attempts = 0;
+      var maxAttempts = 200; // 10s @ 50ms
+      var interval = setInterval(function () {
+        attempts++;
+
+        if (window.__NT_SYSTEM_READY_EMITTED__) {
+          clearInterval(interval);
+          log('system_ready detected after ' + (attempts * 50) + 'ms');
+          requestAnimationFrame(cb);
+          return;
+        }
+
+        if (attempts >= maxAttempts) {
+          clearInterval(interval);
+          log('ERROR: system_ready NOT detected. Tier 2 telemetry BLOCKED.');
+          // FAIL CLOSED: do not proceed
+        }
+      }, 50);
+    }
+
+    function initVisibility() {
+      if (!('IntersectionObserver' in window)) {
+        log('IntersectionObserver unsupported; visibility telemetry disabled');
+        return;
+      }
+
+      var obs = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          var entry = entries[i];
+          if (!entry.isIntersecting) continue;
+
+          var el = entry.target;
+          var ev = el.getAttribute('data-nt-track');
+          if (!ev || emitted[ev]) continue;
+
+          emit(ev, {
+            section_name: el.getAttribute('data-nt-section') || 'unknown'
+          });
+
+          // Fire once per section
+          obs.unobserve(el);
+        }
+      }, { threshold: 0.5 });
+
+      var els = document.querySelectorAll('[data-nt-track]');
+      for (var j = 0; j < els.length; j++) {
+        obs.observe(els[j]);
+        log('OBSERVE: ' + els[j].getAttribute('data-nt-track'));
+      }
+    }
+
+    function initScroll() {
+      var ticking = false;
+
+      function check() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight <= 0) return;
+
+        var pct = Math.round((scrollTop / docHeight) * 100);
+        for (var i = 0; i < BUCKETS.length; i++) {
+          if (pct >= BUCKETS[i]) emitScroll(BUCKETS[i]);
+        }
+      }
+
+      window.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          check();
+          ticking = false;
+        });
+      }, { passive: true });
+
+      // initial (handles anchor landings)
+      check();
+    }
+
+    function initCTA() {
+      document.addEventListener('click', function (e) {
+        var tgt = e.target;
+        if (!(tgt instanceof Element)) return;
+
+        var cta = tgt.closest('[data-nt-event="cta_primary"]');
+        if (!cta) return;
+
+        var payload = {
+          event: 'nt_primary_cta_click',
+          cta_id: cta.getAttribute('data-nt-cta-id') || 'unknown',
+          cta_location: cta.getAttribute('data-nt-cta-location') || 'unknown',
+          page_path: window.location.pathname
+        };
+
+        window.dataLayer.push(payload);
+        log('EMIT: nt_primary_cta_click', payload);
+      });
+    }
+
+    waitForSystemReady(function () {
+      // page-level view (Tier2)
+      emit('nt_tier2_view', {
+        page_name: 'dcs_diagnostic',
+        page_path: window.location.pathname,
+        page_title: document.title
+      });
+
+      initVisibility();
+      initScroll();
+      initCTA();
+
+      log('Tier2 telemetry initialized');
+    });
+  })();
+</script>
