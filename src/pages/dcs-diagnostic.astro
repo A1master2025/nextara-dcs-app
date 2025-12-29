@@ -1,215 +1,192 @@
 ---
-/**
- * DCS Diagnostic Page (Tier 2)
- * 
- * Minimal-diff implementation:
- * - No <head slot>
- * - No canonical URL
- * - Relies entirely on Layout.astro defaults
- * - All styles scoped to .tier2-*
- * - Telemetry gated by nt_system_ready
- */
-import Layout from '../layouts/Layout.astro';
-import Tier2Telemetry from '../components/Tier2Telemetry.astro';
+import Layout from "../layouts/Layout.astro";
+import Tier2Telemetry from "../components/Tier2Telemetry.astro";
 ---
 
-<Layout>
-  <main class="tier2-main" data-nt-page="dcs_diagnostic">
-    <form id="dcs-diagnostic-form"
-  name="dcs-diagnostic"
-  method="POST"
-  data-netlify="true"
-  data-netlify-honeypot="bot-field"
-  action="/dcs-diagnostic/thank-you/"
->
-  <input type="hidden" name="form-name" value="dcs-diagnostic" />
-  <p class="sr-only">
-    <label>Do not fill: <input name="bot-field" /></label>
-  </p>
-
-  <label>
-    Website
-    <input name="website" type="url" required />
-  </label>
-
-  <label>
-    Name
-    <input name="name" type="text" required />
-  </label>
-
-  <label>
-    Email
-    <input name="email" type="email" required />
-  </label>
-
-  <button type="submit">Run Diagnostic</button>
-</form>
-    
-
-    <!-- Section 1: Symptoms -->
-    <section class="tier2-section" data-nt-section="symptoms" data-nt-track="nt_symptoms_view">
-      <div class="tier2-container">
-        <h1 class="tier2-h1">Your Marketing Isn't Broken. Your Credibility Is Invisible.</h1>
-        <p class="tier2-lead">You've tried the agencies. You've spent on ads. You've published content. And yet:</p>
-        <ul class="tier2-list tier2-list--dashes">
-          <li>Your competitors appear in AI answers. You don't.</li>
-          <li>Your ads cost more every quarter with diminishing returns.</li>
-          <li>Your content ranks, but doesn't convert.</li>
-          <li>You can't explain why some campaigns work and others fail.</li>
-        </ul>
-        <p>These aren't marketing problems. They're symptoms of something deeper.</p>
-      </div>
+<Layout title="DCS Diagnostic | NexTara">
+  <Tier2Telemetry />
+  <main data-nt-section="diagnostic" data-nt-page="dcs_diagnostic">
+    <section class="diagnostic-hero">
+      <h1>DCS Diagnostic</h1>
+      <p>Discover how your digital presence scores across credibility, trust, and machine readability.</p>
     </section>
 
-    <!-- Section 2: Reframing -->
-    <section class="tier2-section tier2-section--alt" data-nt-section="reframing" data-nt-track="nt_reframing_view">
-      <div class="tier2-container">
-        <h2 class="tier2-h2">What's Actually Happening</h2>
-        <p class="tier2-lead">The rules changed. Most businesses haven't noticed.</p>
-        <p>Search engines and AI systems no longer just rank pages — they <strong>evaluate credibility</strong>.</p>
-        <p>If your business isn’t structured for machine trust, you’re invisible to AI-driven discovery.</p>
-        <p><strong>This isn’t SEO. It’s systemic credibility.</strong></p>
-      </div>
-    </section>
+    <section class="diagnostic-form-section" data-nt-section="diagnostic_form">
+      <form
+        id="dcs-form"
+        name="dcs-diagnostic"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/dcs-diagnostic/thank-you/"
+        data-nt-form="dcs_diagnostic"
+        data-nt-conversion="true"
+      >
+        <input type="hidden" name="form-name" value="dcs-diagnostic" />
 
-    <!-- Section 3: DCS Definition -->
-    <section class="tier2-section" data-nt-section="dcs_definition" data-nt-track="nt_dcs_definition_view">
-      <div class="tier2-container">
-        <h2 class="tier2-h2">What the Digital Credibility Score Measures</h2>
-        <p class="tier2-lead">DCS quantifies how machines perceive your business:</p>
-        <div class="tier2-grid">
-          <div class="tier2-card">
-            <h3 class="tier2-h3">Structural Clarity</h3>
-            <p>Can machines parse and understand your content?</p>
-          </div>
-          <div class="tier2-card">
-            <h3 class="tier2-h3">Measurement Integrity</h3>
-            <p>Is your telemetry deterministic and auditable?</p>
-          </div>
-          <div class="tier2-card">
-            <h3 class="tier2-h3">Authority Signals</h3>
-            <p>Do you demonstrate expertise through structure, not claims?</p>
-          </div>
-          <div class="tier2-card">
-            <h3 class="tier2-h3">Trust Architecture</h3>
-            <p>Does your site behave like a trustworthy system?</p>
-          </div>
+        <p class="hidden" aria-hidden="true" style="display:none;">
+          <label>
+            Don't fill this out:
+            <input name="bot-field" tabindex="-1" autocomplete="off" />
+          </label>
+        </p>
+
+        <div class="form-field">
+          <label for="dcs-website">Website</label>
+          <input
+            type="url"
+            id="dcs-website"
+            name="website"
+            autocomplete="url"
+            required
+            placeholder="https://yourwebsite.com"
+            data-nt-field="website"
+          />
         </div>
-      </div>
-    </section>
 
-    <!-- Section 4: Telemetry -->
-    <section class="tier2-section tier2-section--alt" data-nt-section="telemetry_value" data-nt-track="nt_telemetry_explainer_view">
-      <div class="tier2-container">
-        <h2 class="tier2-h2">Why Telemetry Matters</h2>
-        <p class="tier2-lead">Analytics reports. Telemetry proves.</p>
-        <ul class="tier2-list tier2-list--checks">
-          <li>Attribute outcomes to actions</li>
-          <li>Defend decisions with evidence</li>
-          <li>Feed clean signals to AI systems</li>
-          <li>Eliminate guesswork</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Section 5: Outcomes -->
-    <section class="tier2-section" data-nt-section="outcomes" data-nt-track="nt_outcomes_view">
-      <div class="tier2-container">
-        <h2 class="tier2-h2">What You Get</h2>
-        <div class="tier2-grid">
-          <div class="tier2-card tier2-card--accent">
-            <h3 class="tier2-h3">Baseline Score</h3>
-            <p>Your current credibility, quantified.</p>
-          </div>
-          <div class="tier2-card tier2-card--accent">
-            <h3 class="tier2-h3">Gap Analysis</h3>
-            <p>What’s missing or hurting you.</p>
-          </div>
-          <div class="tier2-card tier2-card--accent">
-            <h3 class="tier2-h3">Priority Roadmap</h3>
-            <p>What to fix first, and why.</p>
-          </div>
-          <div class="tier2-card tier2-card--accent">
-            <h3 class="tier2-h3">Measurement Foundation</h3>
-            <p>How to prove progress.</p>
-          </div>
+        <div class="form-field">
+          <label for="dcs-name">Name</label>
+          <input
+            type="text"
+            id="dcs-name"
+            name="name"
+            autocomplete="name"
+            required
+            placeholder="Your name"
+            data-nt-field="name"
+          />
         </div>
-      </div>
-    </section>
 
-    <!-- Section 6: CTA -->
-    <section class="tier2-section tier2-section--cta" data-nt-section="diagnostic_cta" data-nt-track="nt_primary_cta_view">
-      <div class="tier2-container">
-        <h2 class="tier2-h2">Ready to See What Machines See?</h2>
-        <p class="tier2-lead">15 minutes. No pitch. Just clarity.</p>
-        <a
-  href="#dcs-diagnostic-form"
-  class="tier2-btn"
-  data-nt-event="cta_primary"
-  data-nt-cta-id="start_diagnostic"
-  data-nt-cta-location="tier2_footer"
->
-  Start Your DCS Diagnostic
-</a>
+        <div class="form-field">
+          <label for="dcs-email">Email</label>
+          <input
+            type="email"
+            id="dcs-email"
+            name="email"
+            autocomplete="email"
+            required
+            placeholder="you@example.com"
+            data-nt-field="email"
+          />
+        </div>
 
-      </div>
+        <div id="dcs-form-error" class="form-error" style="display:none;" role="alert"></div>
+
+        <button
+          type="submit"
+          id="dcs-submit-btn"
+          data-nt-event="cta_conversion"
+          data-nt-cta="dcs_diagnostic_submit"
+        >
+          Run Diagnostic
+        </button>
+      </form>
     </section>
+  </main>
+</Layout>
 
 <script is:inline>
-(function () {
-  window.dataLayer = window.dataLayer || [];
+(function() {
+  var SESSION_KEY = "nt_dcs_diag_view_fired";
 
-  var TIMEOUT_MS = 3000;
-  var POLL_MS = 50;
-  var elapsed = 0;
+  function isSystemReady() {
+    if (window.__NT_SYSTEM_READY_EMITTED__ === true) return true;
+    if (window.dataLayer && Array.isArray(window.dataLayer)) {
+      for (var i = 0; i < window.dataLayer.length; i++) {
+        if (window.dataLayer[i] && window.dataLayer[i].event === "nt_system_ready") {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-  var once = function (key, fn) {
-    try {
-      if (sessionStorage.getItem(key)) return;
-      sessionStorage.setItem(key, "1");
-    } catch (e) {}
-    fn();
-  };
-
-  var fire = function () {
-    once("nt_dcs_diag_view", function () {
+  function pushViewEvent() {
+    if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(SESSION_KEY)) {
+      return;
+    }
+    if (window.dataLayer) {
       window.dataLayer.push({
         event: "nt_dcs_diag_view",
         nt_event_source: "tier2",
-        page_path: location.pathname,
-        page_title: document.title
+        page_path: "/dcs-diagnostic/"
       });
-    });
-  };
-
-  var hasSystemReady = function () {
-  try {
-    for (var i = window.dataLayer.length - 1; i >= 0; i--) {
-      if (window.dataLayer[i] && window.dataLayer[i].event === "nt_system_ready") return true;
+      if (typeof sessionStorage !== "undefined") {
+        sessionStorage.setItem(SESSION_KEY, "1");
+      }
     }
-  } catch (e) {}
-  return false;
-};
-
-var wait = function () {
-  if (hasSystemReady()) {
-    fire();
-    return;
   }
-  if (elapsed < TIMEOUT_MS) {
-      elapsed += POLL_MS;
-      setTimeout(wait, POLL_MS);
-    } else {
-      console.warn('[DIOS] nt_dcs_diag_view: readiness timeout (3000ms) — event not fired');
+
+  function waitForReady() {
+    if (isSystemReady()) {
+      pushViewEvent();
+      return;
     }
-};
+    var attempts = 0;
+    var maxAttempts = 30;
+    var interval = setInterval(function() {
+      attempts++;
+      if (isSystemReady()) {
+        clearInterval(interval);
+        pushViewEvent();
+      } else if (attempts >= maxAttempts) {
+        clearInterval(interval);
+        pushViewEvent();
+      }
+    }, 100);
+  }
 
-wait();
-
+  if (document.readyState === "complete") {
+    waitForReady();
+  } else {
+    window.addEventListener("load", waitForReady);
+  }
 })();
 </script>
 
-</main>
+<script is:inline>
+(function() {
+  var form = document.getElementById("dcs-form");
+  var submitBtn = document.getElementById("dcs-submit-btn");
+  var errorDiv = document.getElementById("dcs-form-error");
 
-  <Tier2Telemetry />
-</Layout>
+  if (!form) return;
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(form);
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+    errorDiv.style.display = "none";
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString()
+    })
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      var thankYouPath = "/dcs-diagnostic/thank-you/";
+      var params = new URLSearchParams(window.location.search);
+      var gtmParams = [];
+      if (params.get("gtm_debug")) gtmParams.push("gtm_debug=" + encodeURIComponent(params.get("gtm_debug")));
+      if (params.get("gtm_auth")) gtmParams.push("gtm_auth=" + encodeURIComponent(params.get("gtm_auth")));
+      if (params.get("gtm_preview")) gtmParams.push("gtm_preview=" + encodeURIComponent(params.get("gtm_preview")));
+      if (gtmParams.length > 0) {
+        thankYouPath += "?" + gtmParams.join("&");
+      }
+      window.location.assign(thankYouPath);
+    })
+    .catch(function(error) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Run Diagnostic";
+      errorDiv.textContent = "Submission failed. Please try again.";
+      errorDiv.style.display = "block";
+      console.error("Form submission error:", error);
+    });
+  });
+})();
+</script>

@@ -1,30 +1,51 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+/**
+ * Thank-you page (Tier 2 submit success)
+ * Route: /dcs-diagnostic/thank-you/
+ * Fires: nt_dcs_diag_submit_success (tier2) with sessionStorage dedupe
+ */
+import Layout from '../../../layouts/Layout.astro';
+import Tier2Telemetry from '../../../components/Tier2Telemetry.astro';
 ---
 
-<Layout>
-  <main>
-    <h1>Request received</h1>
-    <p>We’ll follow up shortly</p>
+<Layout title="Thank You | DCS Diagnostic | NexTara">
+  <Tier2Telemetry />
+  <main data-nt-section="thank_you" data-nt-page="dcs_diagnostic_thank_you">
+    <section class="thank-you-content">
+      <h1>Thank You</h1>
+      <p>Your DCS Diagnostic request has been received.</p>
+      <p>We'll analyze your digital presence and send your personalized credibility report within 24–48 hours.</p>
+      <a href="/" data-nt-event="cta_secondary" data-nt-cta="return_home">Return to Home</a>
+    </section>
 
     <script is:inline>
       (function () {
         window.dataLayer = window.dataLayer || [];
 
+        var KEY = "nt_dcs_diag_submit_success";
         var TIMEOUT_MS = 3000;
         var POLL_MS = 50;
         var elapsed = 0;
 
-        var once = function (key, fn) {
+        function once(key, fn) {
           try {
             if (sessionStorage.getItem(key)) return;
             sessionStorage.setItem(key, "1");
           } catch (e) {}
           fn();
-        };
+        }
 
-        var fire = function () {
-          once("nt_dcs_diag_submit_success", function () {
+        function hasSystemReady() {
+          try {
+            for (var i = window.dataLayer.length - 1; i >= 0; i--) {
+              if (window.dataLayer[i] && window.dataLayer[i].event === "nt_system_ready") return true;
+            }
+          } catch (e) {}
+          return false;
+        }
+
+        function fire() {
+          once(KEY, function () {
             window.dataLayer.push({
               event: "nt_dcs_diag_submit_success",
               nt_event_source: "tier2",
@@ -33,23 +54,82 @@ import Layout from "../../../layouts/Layout.astro";
               page_title: document.title
             });
           });
-        };
+        }
 
-        var poll = function () {
-          if (window.__NT_SYSTEM_READY_EMITTED__) {
+        function wait() {
+          if (hasSystemReady()) {
             fire();
             return;
           }
           if (elapsed < TIMEOUT_MS) {
-        elapsed += POLL_MS;
-        setTimeout(poll, POLL_MS);
-      } else {
-        console.warn('[DIOS] nt_dcs_diag_submit_success: readiness timeout (3000ms) — event not fired');
-      }
-        };
+            elapsed += POLL_MS;
+            setTimeout(wait, POLL_MS);
+          }
+          // fail-closed on readiness timeout
+        }
 
-        poll();
+        wait();
       })();
     </script>
+
+    <Tier2Telemetry />
   </main>
 </Layout>
+
+<script is:inline>
+(function() {
+  var SESSION_KEY = "nt_dcs_diag_submit_success_fired";
+  var TIMEOUT_MS = 3000;
+
+  function isSystemReady() {
+    if (window.__NT_SYSTEM_READY_EMITTED__ === true) return true;
+    if (window.dataLayer && Array.isArray(window.dataLayer)) {
+      for (var i = 0; i < window.dataLayer.length; i++) {
+        if (window.dataLayer[i] && window.dataLayer[i].event === "nt_system_ready") {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function pushSuccessEvent() {
+    if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(SESSION_KEY)) {
+      return;
+    }
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: "nt_dcs_diag_submit_success",
+        nt_event_source: "tier2",
+        form_name: "dcs-diagnostic"
+      });
+      if (typeof sessionStorage !== "undefined") {
+        sessionStorage.setItem(SESSION_KEY, "1");
+      }
+    }
+  }
+
+  function waitForReady() {
+    if (isSystemReady()) {
+      pushSuccessEvent();
+      return;
+    }
+    var startTime = Date.now();
+    var interval = setInterval(function() {
+      if (isSystemReady()) {
+        clearInterval(interval);
+        pushSuccessEvent();
+      } else if (Date.now() - startTime >= TIMEOUT_MS) {
+        clearInterval(interval);
+        pushSuccessEvent();
+      }
+    }, 100);
+  }
+
+  if (document.readyState === "complete") {
+    waitForReady();
+  } else {
+    window.addEventListener("load", waitForReady);
+  }
+})();
+</script>
