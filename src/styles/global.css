@@ -131,6 +131,7 @@ a:hover {
   border: 1px solid transparent;
   cursor: pointer;
   line-height: 1;
+transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 
   /* Normalize native button appearance */
   background: none;
@@ -145,18 +146,24 @@ a:hover {
 }
 
 .btn-primary:hover {
-  filter: brightness(0.95);
+  filter: brightness(0.90);
+  color: var(--brand-surface);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .btn-secondary {
-  background-color: transparent;
-  color: var(--text-primary);
-  border-color: var(--border-subtle);
+  background-color: #EFF6FF;
+  color: var(--action-primary);
+  border: 1px solid var(--action-primary);
 }
 
 .btn-secondary:hover {
+  background-color: var(--action-primary);
+  color: var(--brand-surface);
   border-color: var(--action-primary);
-  color: var(--action-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 /* =========================================================
