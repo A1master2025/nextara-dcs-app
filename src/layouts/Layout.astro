@@ -24,14 +24,12 @@ const {
   ogImagePath,
   robots: robotsOverride,
 } = Astro.props;
-
 // Production origin is the canonical source of truth
 const CANONICAL_ORIGIN = "https://nextara-ai-solutions.com";
-const PROD_ORIGINS = new Set([CANONICAL_ORIGIN, "https://www.nextara-ai-solutions.com"]);
 
-// Determine environment by comparing origin
-const currentOrigin = Astro.url?.origin || "";
-const isProduction = PROD_ORIGINS.has(currentOrigin);
+// Netlify build context (SSG-safe; deterministic)
+const NETLIFY_CONTEXT = process.env.CONTEXT || "local";
+const isProduction = NETLIFY_CONTEXT === "production";
 
 // Canonical path normalization (trailing slash safety for route paths)
 const rawPath = Astro.url?.pathname || "/";
