@@ -3,7 +3,12 @@ import Layout from "../layouts/Layout.astro";
 import Tier2Telemetry from "../components/Tier2Telemetry.astro";
 ---
 
-<Layout title="DCS Diagnostic | NexTara">
+<Layout
+  title="DCS Diagnostic | NexTara"
+  description="Run your Digital Credibility Score diagnostic. Discover how your digital presence scores across credibility, trust, and machine readability."
+  robots="noindex,follow"
+>
+
   <Tier2Telemetry />
   <main data-nt-section="diagnostic" data-nt-page="dcs_diagnostic">
     <section class="diagnostic-hero">
@@ -20,7 +25,6 @@ import Tier2Telemetry from "../components/Tier2Telemetry.astro";
         data-netlify-honeypot="bot-field"
         action="/dcs-diagnostic/thank-you/"
         data-nt-form="dcs_diagnostic"
-        data-nt-conversion="true"
       >
         <input type="hidden" name="form-name" value="dcs-diagnostic" />
 

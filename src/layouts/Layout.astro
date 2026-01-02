@@ -1,6 +1,95 @@
 ---
-import '../styles/global.css';
-import TelemetryInit from '../components/TelemetryInit.astro';
+import "../styles/global.css";
+import TelemetryInit from "../components/TelemetryInit.astro";
+
+/**
+ * MVIG (Minimum Viable Indexing Gate)
+ * - Canonical always points to production origin (prevents Netlify preview competing).
+ * - Non-prod hosts: noindex,nofollow (defensive, no overrides allowed).
+ * - Prod host: index,follow by default.
+ * - Per-page robots override supported on prod only (e.g., /dcs-diagnostic/ => noindex,follow).
+ * - Adds canonical, meta description, OG/Twitter, and minimal JSON-LD (Organization/WebSite/WebPage).
+ */
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImagePath?: string;
+  robots?: string;
+}
+
+const {
+  title: pageTitle,
+  description: pageDescription,
+  ogImagePath,
+  robots: robotsOverride,
+} = Astro.props;
+
+// Production origin is the canonical source of truth
+const CANONICAL_ORIGIN = "https://nextara-ai-solutions.com";
+const PROD_ORIGINS = new Set([CANONICAL_ORIGIN, "https://www.nextara-ai-solutions.com"]);
+
+// Determine environment by comparing origin
+const currentOrigin = Astro.url?.origin || "";
+const isProduction = PROD_ORIGINS.has(currentOrigin);
+
+// Canonical path normalization (trailing slash safety for route paths)
+const rawPath = Astro.url?.pathname || "/";
+const normalizedPath =
+  rawPath.includes(".") ? rawPath : (rawPath.endsWith("/") ? rawPath : `${rawPath}/`);
+
+// Canonical always uses production origin
+const canonicalUrl = new URL(normalizedPath, CANONICAL_ORIGIN).toString();
+
+// Default robots by environment
+const defaultRobots = isProduction ? "index,follow" : "noindex,nofollow";
+
+// Final robots:
+// - Non-prod: always noindex,nofollow (do not allow overrides to weaken this)
+// - Prod: allow per-page override (e.g., /dcs-diagnostic/ => noindex,follow)
+const robots = isProduction ? (robotsOverride ?? defaultRobots) : defaultRobots;
+
+// Defaults (Phase 2-safe)
+const DEFAULT_TITLE = "NexTara AI Solutions — Digital Credibility System (DCS)";
+const DEFAULT_DESCRIPTION =
+  "Governed digital growth systems. Measure credibility, fix trust gaps, and prove what's real—across humans and machines.";
+
+const title = pageTitle || DEFAULT_TITLE;
+const description = pageDescription || DEFAULT_DESCRIPTION;
+
+// Optional OG image
+const ogImageAbs = ogImagePath ? new URL(ogImagePath, CANONICAL_ORIGIN).toString() : undefined;
+
+// Minimal schema only (MVIG scope)
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${CANONICAL_ORIGIN}/#org`,
+    "name": "NexTara AI Solutions",
+    "url": CANONICAL_ORIGIN,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${CANONICAL_ORIGIN}/#website`,
+    "name": "NexTara AI Solutions",
+    "url": CANONICAL_ORIGIN,
+    "inLanguage": "en",
+    "publisher": { "@id": `${CANONICAL_ORIGIN}/#org` },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${canonicalUrl}#webpage`,
+    "url": canonicalUrl,
+    "name": title,
+    "description": description,
+    "isPartOf": { "@id": `${CANONICAL_ORIGIN}/#website` },
+    "about": { "@id": `${CANONICAL_ORIGIN}/#org` },
+    "inLanguage": "en",
+  },
+];
 ---
 
 <!doctype html>
@@ -10,10 +99,33 @@ import TelemetryInit from '../components/TelemetryInit.astro';
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>NexTara DCS</title>
-    <meta name="robots" content="noindex,follow" />
 
-    <!-- Google Tag Manager -->
+    <!-- MVIG robots (env default + optional per-page override on prod only) -->
+    <meta name="robots" content={robots} />
+
+    <!-- Core SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NexTara AI Solutions" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content={ogImageAbs ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
+
+    <!-- Structured Data (MVIG minimal) -->
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+
+    <!-- Google Tag Manager (UNCHANGED) -->
     <script>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
@@ -35,7 +147,7 @@ import TelemetryInit from '../components/TelemetryInit.astro';
   </head>
 
   <body>
-    <!-- Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager (noscript) (UNCHANGED) -->
     <noscript>
       <iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-N6HDR6L7"
@@ -47,7 +159,6 @@ import TelemetryInit from '../components/TelemetryInit.astro';
     <!-- End Google Tag Manager (noscript) -->
 
     <slot />
-    
     <TelemetryInit />
   </body>
 </html>
