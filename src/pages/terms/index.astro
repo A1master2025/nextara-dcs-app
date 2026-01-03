@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageTitle = "Terms of Service";
+const pageDescription = "Terms and conditions governing the use of NexTara's services.";
+---
+
+<BaseLayout 
+  title={pageTitle}
+  description={pageDescription}
+>
+  <main class="min-h-screen bg-white">
+    <!-- Hero Section -->
+    <section 
+      class="py-20 bg-gradient-to-br from-slate-50 to-blue-50"
+      data-nt-section="terms-hero"
+    >
+      <div class="max-w-4xl mx-auto px-6">
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+          Terms of Service
+        </h1>
+        <p class="text-xl text-slate-600 leading-relaxed">
+          Clear, transparent terms governing our relationship with you and your use of NexTara services.
+        </p>
+      </div>
+    </section>
+
+    <!-- Content Section -->
+    <section 
+      class="py-16"
+      data-nt-section="terms-content"
+    >
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="prose prose-lg prose-slate max-w-none">
+          <h2>Service Agreement</h2>
+          <p>
+            By using NexTara's services, you agree to these terms of service. 
+            Detailed terms will be published here.
+          </p>
+
+          <h2>Acceptable Use</h2>
+          <p>
+            NexTara services are provided for legitimate business purposes. 
+            Misuse or abuse of our systems is prohibited.
+          </p>
+
+          <h2>Service Availability</h2>
+          <p>
+            We strive to maintain high availability but cannot guarantee uninterrupted service. 
+            Maintenance windows will be communicated in advance when possible.
+          </p>
+
+          <h2>Modifications</h2>
+          <p>
+            NexTara reserves the right to modify these terms. Users will be notified 
+            of material changes via email or platform notification.
+          </p>
+
+          <h2>Contact</h2>
+          <p>
+            For questions about these terms, contact us at{' '}
+            <a 
+              href="mailto:legal@nextara.com"
+              class="text-blue-600 hover:text-blue-700 underline"
+              data-nt-event="terms_email_click"
+            >
+              legal@nextara.com
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

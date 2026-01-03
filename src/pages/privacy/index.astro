@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageTitle = "Privacy Policy";
+const pageDescription = "NexTara's commitment to protecting your data and privacy.";
+---
+
+<BaseLayout 
+  title={pageTitle}
+  description={pageDescription}
+>
+  <main class="min-h-screen bg-white">
+    <!-- Hero Section -->
+    <section 
+      class="py-20 bg-gradient-to-br from-slate-50 to-blue-50"
+      data-nt-section="privacy-hero"
+    >
+      <div class="max-w-4xl mx-auto px-6">
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+          Privacy Policy
+        </h1>
+        <p class="text-xl text-slate-600 leading-relaxed">
+          Your privacy matters. This page outlines how NexTara collects, uses, and protects your information.
+        </p>
+      </div>
+    </section>
+
+    <!-- Content Section -->
+    <section 
+      class="py-16"
+      data-nt-section="privacy-content"
+    >
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="prose prose-lg prose-slate max-w-none">
+          <h2>Information Collection</h2>
+          <p>
+            NexTara is committed to transparency in how we handle your data. 
+            Detailed privacy policy content will be published here.
+          </p>
+
+          <h2>Data Usage</h2>
+          <p>
+            We use collected information solely to improve our services and provide 
+            you with relevant insights about your digital credibility.
+          </p>
+
+          <h2>Your Rights</h2>
+          <p>
+            You have the right to access, modify, or delete your personal information 
+            at any time. Contact us for data requests.
+          </p>
+
+          <h2>Contact</h2>
+          <p>
+            For privacy-related inquiries, please contact us at{' '}
+            <a 
+              href="mailto:privacy@nextara.com"
+              class="text-blue-600 hover:text-blue-700 underline"
+              data-nt-event="privacy_email_click"
+            >
+              privacy@nextara.com
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
