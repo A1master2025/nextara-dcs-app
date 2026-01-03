@@ -1,0 +1,188 @@
+---
+/**
+ * Header Component
+ * Global site header with primary navigation.
+ * DIOS: data-nt-section="header", nav links have data-nt-event
+ */
+import { SITE } from "../config/site";
+import { primaryNav, ctaNav } from "../data/nav";
+---
+
+<header class="nt-header" data-nt-section="header">
+  <div class="nt-header__inner">
+    <a href="/" class="nt-header__logo" data-nt-event="nav_home">
+      {SITE.shortName}
+    </a>
+
+    <nav class="nt-header__nav" aria-label="Primary navigation">
+      <ul class="nt-header__nav-list">
+        {primaryNav.map((item) => (
+          <li class="nt-header__nav-item">
+            
+              href={item.href}
+              class="nt-header__nav-link"
+              data-nt-event={item.ntEvent}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    
+      href={ctaNav.href}
+      class="nt-header__cta"
+      data-nt-event={ctaNav.ntEvent}
+    >
+      {ctaNav.label}
+    </a>
+
+    <button
+      class="nt-header__mobile-toggle"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      data-nt-event="nav_mobile_toggle"
+    >
+      <span class="nt-header__mobile-icon"></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .nt-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-brand-primary, #0B1E3A);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nt-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+  }
+
+  .nt-header__logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nt-header__logo:hover {
+    opacity: 0.9;
+  }
+
+  .nt-header__nav {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .nt-header__nav {
+      display: block;
+    }
+  }
+
+  .nt-header__nav-list {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nt-header__nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+
+  .nt-header__nav-link:hover,
+  .nt-header__nav-link:focus-visible {
+    color: #fff;
+  }
+
+  .nt-header__nav-link:focus-visible {
+    outline: 2px solid var(--color-action, #2563EB);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .nt-header__cta {
+    display: none;
+    padding: 0.5rem 1rem;
+    background: var(--color-action, #2563EB);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+  }
+
+  @media (min-width: 768px) {
+    .nt-header__cta {
+      display: inline-block;
+    }
+  }
+
+  .nt-header__cta:hover {
+    background: #1d4ed8;
+  }
+
+  .nt-header__cta:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  .nt-header__mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (min-width: 768px) {
+    .nt-header__mobile-toggle {
+      display: none;
+    }
+  }
+
+  .nt-header__mobile-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    position: relative;
+  }
+
+  .nt-header__mobile-icon::before,
+  .nt-header__mobile-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+  }
+
+  .nt-header__mobile-icon::before {
+    top: -7px;
+  }
+
+  .nt-header__mobile-icon::after {
+    top: 7px;
+  }
+</style>

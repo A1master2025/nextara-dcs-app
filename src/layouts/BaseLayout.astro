@@ -1,0 +1,62 @@
+---
+/**
+ * BaseLayout
+ * Global shell wrapping Layout.astro (MVIG source of truth).
+ * Adds Header and Footer around page content.
+ * 
+ * MVIG Integration Rule:
+ * - Layout.astro owns all head meta (robots, canonical, OG, JSON-LD)
+ * - BaseLayout passes props through to Layout; no duplication
+ * - Header/Footer are purely presentational (no SEO tags)
+ */
+import Layout from "./Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  /** Page title (passed to Layout for <title> and OG) */
+  title?: string;
+  /** Page description (passed to Layout for meta and OG) */
+  description?: string;
+  /** OG image path relative to origin (passed to Layout) */
+  ogImagePath?: string;
+  /** Robots override for prod only (passed to Layout) */
+  robots?: string;
+  /** 
+   * Optional canonical path override. 
+   * If not provided, Layout.astro auto-derives from Astro.url.pathname 
+   */
+  canonicalPath?: string;
+  /** If true, hides header (e.g., for landing pages) */
+  hideHeader?: boolean;
+  /** If true, hides footer (e.g., for conversion flows) */
+  hideFooter?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImagePath,
+  robots,
+  canonicalPath,
+  hideHeader = false,
+  hideFooter = false,
+} = Astro.props;
+
+// Note: canonicalPath is accepted for future use but Layout.astro
+// currently auto-derives canonical from Astro.url.pathname.
+// If explicit override needed, Layout.astro would need a prop addition.
+---
+
+<Layout
+  title={title}
+  description={description}
+  ogImagePath={ogImagePath}
+  robots={robots}
+>
+  {!hideHeader && <Header />}
+  
+  <slot />
+  
+  {!hideFooter && <Footer />}
+</Layout>
