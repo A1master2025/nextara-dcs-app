@@ -2,10 +2,8 @@
 /**
  * Header Component
  * Global site header with primary navigation.
- * DIOS: data-nt-section="header", nav links have data-nt-event
  */
 import { SITE } from "../config/site";
-import { primaryNav, ctaNav } from "../data/nav";
 ---
 
 <header class="nt-header" data-nt-section="header">
@@ -16,26 +14,26 @@ import { primaryNav, ctaNav } from "../data/nav";
 
     <nav class="nt-header__nav" aria-label="Primary navigation">
       <ul class="nt-header__nav-list">
-        {primaryNav.map((item) => (
-          <li class="nt-header__nav-item">
-            
-              href={item.href}
-              class="nt-header__nav-link"
-              data-nt-event={item.ntEvent}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+        <li class="nt-header__nav-item">
+          <a href="/services/" class="nt-header__nav-link" data-nt-event="nav_services">Services</a>
+        </li>
+        <li class="nt-header__nav-item">
+          <a href="/dcs/" class="nt-header__nav-link" data-nt-event="nav_dcs">DCS</a>
+        </li>
+        <li class="nt-header__nav-item">
+          <a href="/resources/" class="nt-header__nav-link" data-nt-event="nav_resources">Resources</a>
+        </li>
+        <li class="nt-header__nav-item">
+          <a href="/about/" class="nt-header__nav-link" data-nt-event="nav_about">About</a>
+        </li>
+        <li class="nt-header__nav-item">
+          <a href="/contact/" class="nt-header__nav-link" data-nt-event="nav_contact">Contact</a>
+        </li>
       </ul>
     </nav>
 
-    
-      href={ctaNav.href}
-      class="nt-header__cta"
-      data-nt-event={ctaNav.ntEvent}
-    >
-      {ctaNav.label}
+    <a href="/dcs-diagnostic/" class="nt-header__cta" data-nt-event="nav_cta_diagnostic">
+      Get Your DCS Score
     </a>
 
     <button
@@ -110,12 +108,6 @@ import { primaryNav, ctaNav } from "../data/nav";
     color: #fff;
   }
 
-  .nt-header__nav-link:focus-visible {
-    outline: 2px solid var(--color-action, #2563EB);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
   .nt-header__cta {
     display: none;
     padding: 0.5rem 1rem;
@@ -136,11 +128,6 @@ import { primaryNav, ctaNav } from "../data/nav";
 
   .nt-header__cta:hover {
     background: #1d4ed8;
-  }
-
-  .nt-header__cta:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
   }
 
   .nt-header__mobile-toggle {

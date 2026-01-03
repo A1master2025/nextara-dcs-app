@@ -2,10 +2,8 @@
 /**
  * Footer Component
  * Global site footer with secondary navigation and legal links.
- * DIOS: data-nt-section="footer"
  */
 import { SITE } from "../config/site";
-import { primaryNav } from "../data/nav";
 
 const currentYear = new Date().getFullYear();
 ---
@@ -23,17 +21,21 @@ const currentYear = new Date().getFullYear();
 
     <nav class="nt-footer__nav" aria-label="Footer navigation">
       <ul class="nt-footer__nav-list">
-        {primaryNav.map((item) => (
-          <li>
-            
-              href={item.href}
-              class="nt-footer__nav-link"
-              data-nt-event={`footer_${item.ntEvent?.replace("nav_", "")}`}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+        <li>
+          <a href="/services/" class="nt-footer__nav-link" data-nt-event="footer_services">Services</a>
+        </li>
+        <li>
+          <a href="/dcs/" class="nt-footer__nav-link" data-nt-event="footer_dcs">DCS</a>
+        </li>
+        <li>
+          <a href="/resources/" class="nt-footer__nav-link" data-nt-event="footer_resources">Resources</a>
+        </li>
+        <li>
+          <a href="/about/" class="nt-footer__nav-link" data-nt-event="footer_about">About</a>
+        </li>
+        <li>
+          <a href="/contact/" class="nt-footer__nav-link" data-nt-event="footer_contact">Contact</a>
+        </li>
       </ul>
     </nav>
 
@@ -125,12 +127,6 @@ const currentYear = new Date().getFullYear();
     color: #fff;
   }
 
-  .nt-footer__nav-link:focus-visible {
-    outline: 2px solid var(--color-action, #2563EB);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
   .nt-footer__legal {
     text-align: center;
   }
@@ -142,33 +138,4 @@ const currentYear = new Date().getFullYear();
   }
 
   .nt-footer__copyright {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.8125rem;
-  }
-
-  .nt-footer__legal-links {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .nt-footer__legal-links {
-      justify-content: flex-end;
-    }
-  }
-
-  .nt-footer__legal-link {
-    color: rgba(255, 255, 255, 0.5);
-    text-decoration: none;
-    font-size: 0.75rem;
-    transition: color 0.15s ease;
-  }
-
-  .nt-footer__legal-link:hover,
-  .nt-footer__legal-link:focus-visible {
-    color: rgba(255, 255, 255, 0.8);
-  }
-</style>
+    marg
