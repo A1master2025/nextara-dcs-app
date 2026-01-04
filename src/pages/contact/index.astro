@@ -1,61 +1,52 @@
 ---
-/**
- * Contact Page (Stub)
- * Phase 3 route placeholder - content to be implemented in future sprint.
- */
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
   title="Contact — NexTara AI Solutions"
-  description="Get in touch with NexTara. Start a conversation about your digital credibility needs."
+  description="Request a consultation or ask a question. NexTara builds governed digital growth systems."
 >
-  <main class="stub-page" data-nt-section="contact">
-    <div class="stub-page__inner">
-      <h1>Contact</h1>
-      <p class="stub-page__notice">
-        This page is under construction. Full content coming soon.
+  <main class="container page-pad-top" data-nt-section="contact">
+    <h1>Contact</h1>
+    <p>Send a message and we'll respond promptly.</p>
+
+    <form
+      name="contact"
+      method="POST"
+      action="/contact/thank-you/"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      data-nt-event="contact_form_submit"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+
+      <p style="display:none">
+        <label>
+          Don't fill this out: <input name="bot-field" />
+        </label>
       </p>
-      <a href="/" class="stub-page__back" data-nt-event="stub_back_home">
-        &larr; Return to Homepage
-      </a>
-    </div>
+
+      <label>
+        Full name
+        <input name="name" type="text" autocomplete="name" required />
+      </label>
+
+      <label>
+        Email
+        <input name="email" type="email" autocomplete="email" required />
+      </label>
+
+      <label>
+        Company (optional)
+        <input name="company" type="text" autocomplete="organization" />
+      </label>
+
+      <label>
+        Message
+        <textarea name="message" rows="6" required></textarea>
+      </label>
+
+      <button class="btn btn-primary" type="submit">Send</button>
+    </form>
   </main>
 </BaseLayout>
-
-<style>
-  .stub-page {
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1.5rem;
-  }
-
-  .stub-page__inner {
-    text-align: center;
-    max-width: 480px;
-  }
-
-  .stub-page h1 {
-    font-size: 2rem;
-    color: var(--color-brand-primary, #0B1E3A);
-    margin: 0 0 1rem;
-  }
-
-  .stub-page__notice {
-    color: #64748b;
-    margin: 0 0 2rem;
-  }
-
-  .stub-page__back {
-    display: inline-block;
-    color: var(--color-action, #2563EB);
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .stub-page__back:hover {
-    text-decoration: underline;
-  }
-</style>
