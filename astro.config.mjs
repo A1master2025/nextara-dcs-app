@@ -8,9 +8,8 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => {
-        // Exclude diagnostic from sitemap (noindex,follow page should not be in sitemap)
-        const url = typeof page === 'string' ? page : page?.toString?.() ?? '';
-        return !url.includes('/dcs-diagnostic/');
+        const p = typeof page === "string" ? page : page.pathname || String(page);
+        return !p.includes("/dcs-diagnostic/") && !p.includes("/thank-you/");
       },
     }),
   ],
