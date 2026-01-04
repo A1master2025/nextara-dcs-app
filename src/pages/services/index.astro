@@ -3,115 +3,82 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="DCS Audits — NexTara AI Solutions"
-  description="Comprehensive Digital Credibility System audits that identify gaps in trust signals, technical SEO, and conversion architecture."
+  title="Services — NexTara AI Solutions"
+  description="Governed digital growth systems: DCS audits, tracking governance, conversion architecture, SEO & indexing, automation, and paid media systems."
 >
-  <main class="container page-pad-top" data-nt-section="service_dcs_audits">
-    
-    <section class="service-hero" data-nt-section="service_hero">
-      <h1>DCS Audits</h1>
-      <p class="service-hero__lead">A systematic evaluation of your digital credibility across trust signals, technical foundations, and conversion pathways.</p>
-    </section>
+  <main data-nt-section="services">
+    <section class="section">
+      <div class="container page-pad-top">
+        <p class="nt-eyebrow">Services</p>
+        <h1>Governed Digital Growth Systems</h1>
+        <p>
+          We build and govern the digital system behind your business—so performance is measurable,
+          credibility is defensible, and growth is controllable.
+        </p>
 
-    <section class="service-detail" data-nt-section="service_what_it_solves">
-      <h2>What it solves</h2>
-      <p>Most businesses operate with fragmented digital systems—analytics that don't connect, SEO that conflicts with UX, and trust signals that fail to compound. A DCS Audit identifies these gaps before they cost you revenue.</p>
-      <ul>
-        <li>Disconnected tracking and measurement</li>
-        <li>Technical SEO issues blocking indexation</li>
-        <li>Trust signals that don't reinforce credibility</li>
-        <li>Conversion friction invisible to internal teams</li>
-      </ul>
-    </section>
-
-    <section class="service-detail" data-nt-section="service_what_you_get">
-      <h2>What you get</h2>
-      <ul>
-        <li>Full-system credibility assessment across 47 signals</li>
-        <li>Prioritized remediation roadmap</li>
-        <li>Technical SEO and indexation review</li>
-        <li>Analytics governance audit</li>
-        <li>Conversion architecture analysis</li>
-        <li>Executive summary with actionable next steps</li>
-      </ul>
-    </section>
-
-    <section class="service-detail" data-nt-section="service_who_its_for">
-      <h2>Who it's for</h2>
-      <p>DCS Audits are designed for established businesses experiencing one or more of these conditions:</p>
-      <ul>
-        <li>Traffic that doesn't convert</li>
-        <li>Marketing spend with unclear ROI</li>
-        <li>Multiple agencies with no unified strategy</li>
-        <li>Rebuilding after a failed website project</li>
-        <li>Preparing for significant growth investment</li>
-      </ul>
-    </section>
-
-    <section class="service-cta" data-nt-section="service_cta">
-      <h2>Start with proof</h2>
-      <p>See where your digital credibility stands before committing to a full engagement.</p>
-      <div class="service-cta__actions">
-        <a href="/dcs-diagnostic/" class="btn btn-primary" data-nt-event="service_cta_diagnostic">Get Your DCS Score</a>
-        <a href="/contact/" class="btn btn-secondary" data-nt-event="service_cta_contact">Request Consultation</a>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/dcs-diagnostic/" data-nt-event="services_cta_diagnostic">
+            Run Your DCS Score
+          </a>
+          <a class="btn btn-secondary" href="/contact/" data-nt-event="services_cta_contact">
+            Request a Consultation
+          </a>
+        </div>
       </div>
     </section>
 
-    <nav class="service-nav" data-nt-section="service_nav">
-      <a href="/services/" data-nt-event="service_back_to_hub">← All Services</a>
-    </nav>
+    <section class="section">
+      <div class="container">
+        <div class="nt-grid">
+          <article class="nt-card">
+            <h2><a href="/services/dcs-audits/" data-nt-event="services_card_dcs_audits">DCS Audits (PromptCore)</a></h2>
+            <p>Compliance-grade technical credibility verification with prioritized remediation.</p>
+          </article>
 
+          <article class="nt-card">
+            <h2><a href="/services/tracking-governance/" data-nt-event="services_card_tracking">Tracking Governance</a></h2>
+            <p>GTM-only instrumentation, clean analytics, event hygiene, and proof-based reporting.</p>
+          </article>
+
+          <article class="nt-card">
+            <h2><a href="/services/conversion-architecture/" data-nt-event="services_card_conversion">Conversion Architecture</a></h2>
+            <p>Funnels, forms, thank-you endpoints, and measurable actions tied to business outcomes.</p>
+          </article>
+
+          <article class="nt-card">
+            <h2><a href="/services/seo-indexing/" data-nt-event="services_card_seo">SEO + Indexing Systems</a></h2>
+            <p>Sitemaps, internal linking, crawl policy, structured data, and search visibility control.</p>
+          </article>
+
+          <article class="nt-card">
+            <h2><a href="/services/automation-ecc/" data-nt-event="services_card_automation">Automation (ECC)</a></h2>
+            <p>Operational automations that reduce manual work and eliminate reporting ambiguity.</p>
+          </article>
+
+          <article class="nt-card">
+            <h2><a href="/services/paid-media-systems/" data-nt-event="services_card_paid_media">Paid Media Systems</a></h2>
+            <p>Campaign structure + measurement discipline so spend is governed, not guessed.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="nt-cta-card">
+          <h2>Start with proof.</h2>
+          <p>Run your DCS Score and we’ll tell you what’s real, what’s missing, and what to fix first.</p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="/dcs-diagnostic/" data-nt-event="services_cta_bottom_diagnostic">
+              Run Your DCS Score
+            </a>
+            <a class="btn btn-secondary" href="/contact/" data-nt-event="services_cta_bottom_contact">
+              Talk to NexTara
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </BaseLayout>
-
-<style>
-  .service-hero {
-    margin-bottom: 3rem;
-  }
-
-  .service-hero__lead {
-    font-size: 1.25rem;
-    color: var(--text-muted, #64748B);
-    max-width: 640px;
-  }
-
-  .service-detail {
-    margin-bottom: 2.5rem;
-  }
-
-  .service-detail h2 {
-    margin-bottom: 1rem;
-  }
-
-  .service-detail ul {
-    margin: 1rem 0;
-    padding-left: 1.5rem;
-  }
-
-  .service-detail li {
-    margin-bottom: 0.5rem;
-  }
-
-  .service-cta {
-    background: var(--brand-surface-muted, #F8FAFC);
-    padding: 2rem;
-    border-radius: 0.5rem;
-    margin: 3rem 0;
-  }
-
-  .service-cta h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .service-cta__actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .service-nav {
-    padding: 2rem 0;
-    border-top: 1px solid var(--border-subtle, #E1E3E8);
-  }
-</style>
