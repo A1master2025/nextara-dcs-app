@@ -1,0 +1,4 @@
+﻿User-agent: *
+Allow: /
+
+Sitemap: https://nextara-ai-solutions.com/sitemap.xml
