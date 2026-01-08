@@ -1,0 +1,93 @@
+---
+/**
+ * ProofPanel.astro
+ * "What we verify" governance/validation checklist.
+ * Enterprise trust signal.
+ * 
+ * DIOS: data-nt-section="proof"
+ */
+import type { ProofChecklistItem } from "../../data/services";
+
+interface Props {
+  items: ProofChecklistItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="proof" data-nt-section="proof">
+  <h2 class="proof__heading">What we verify</h2>
+  <p class="proof__intro">Every engagement includes documented evidence. Here's what we check:</p>
+  <ul class="proof__list">
+    {items.map((item) => (
+      <li class="proof__item">
+        <span class="proof__check" aria-hidden="true">✓</span>
+        <div class="proof__content">
+          <strong class="proof__label">{item.label}</strong>
+          <span class="proof__detail">{item.detail}</span>
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .proof {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background: var(--color-brand-surface, #F1F5F9);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-subtle, #E1E3E8);
+  }
+
+  .proof__heading {
+    font-size: 1.25rem;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 0.5rem;
+  }
+
+  .proof__intro {
+    font-size: 0.9375rem;
+    color: var(--text-muted, #64748B);
+    margin: 0 0 1.25rem;
+  }
+
+  .proof__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .proof__item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .proof__check {
+    flex-shrink: 0;
+    color: var(--color-success, #16A34A);
+    font-weight: bold;
+    margin-top: 0.125rem;
+  }
+
+  .proof__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .proof__label {
+    font-weight: 600;
+    color: var(--color-brand-primary, #0B1E3A);
+    font-size: 0.9375rem;
+  }
+
+  .proof__detail {
+    font-size: 0.875rem;
+    color: var(--text-muted, #64748B);
+  }
+</style>

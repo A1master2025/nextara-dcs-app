@@ -1,0 +1,83 @@
+---
+/**
+ * CTABlock.astro
+ * Conversion block with primary + secondary CTAs and micro-trust line.
+ * Placed at bottom of service pages.
+ * 
+ * DIOS: data-nt-section="service-cta"
+ */
+import type { CTA } from "../../data/services";
+
+interface Props {
+  primaryCta: CTA;
+  secondaryCta: CTA;
+  microTrust: string;
+}
+
+const { primaryCta, secondaryCta, microTrust } = Astro.props;
+---
+
+<section class="cta-block" data-nt-section="service-cta">
+  <h2 class="cta-block__heading">Ready to start?</h2>
+  <p class="cta-block__copy">Get clarity on your digital credibility—before committing to a full engagement.</p>
+  
+  <div class="cta-block__actions">
+    <a 
+      href={primaryCta.href} 
+      class="btn btn-primary" 
+      data-nt-event="cta_primary"
+      data-nt-location="bottom"
+    >
+      {primaryCta.label}
+    </a>
+    <a 
+      href={secondaryCta.href} 
+      class="btn btn-secondary" 
+      data-nt-event="cta_secondary"
+      data-nt-location="bottom"
+    >
+      {secondaryCta.label}
+    </a>
+  </div>
+  
+  <p class="cta-block__trust">{microTrust}</p>
+</section>
+
+<style>
+  .cta-block {
+    background: var(--brand-surface-muted, #F8FAFC);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .cta-block__heading {
+    font-size: 1.5rem;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 0.5rem;
+  }
+
+  .cta-block__copy {
+    font-size: 1rem;
+    color: var(--text-muted, #64748B);
+    margin: 0 0 1.5rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-block__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .cta-block__trust {
+    font-size: 0.875rem;
+    color: var(--text-muted, #64748B);
+    margin: 0;
+  }
+</style>

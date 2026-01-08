@@ -1,0 +1,77 @@
+---
+/**
+ * ServicePage.astro
+ * Standardized layout for all /services/<slug>/ pages.
+ * Consumes ServicePage objects from registry.
+ * 
+ * Phase 4: Authority + Conversion Hardening
+ */
+import BaseLayout from "./BaseLayout.astro";
+import Breadcrumbs from "../components/services/Breadcrumbs.astro";
+import ServiceHero from "../components/services/ServiceHero.astro";
+import AudienceFit from "../components/services/AudienceFit.astro";
+import Deliverables from "../components/services/Deliverables.astro";
+import ProcessTimeline from "../components/services/ProcessTimeline.astro";
+import ProofPanel from "../components/services/ProofPanel.astro";
+import FAQ from "../components/services/FAQ.astro";
+import CTABlock from "../components/services/CTABlock.astro";
+import RelatedServices from "../components/services/RelatedServices.astro";
+
+import type { ServicePage as ServicePageType } from "../data/services";
+import { resolveCTAs, getMicroTrust, getRelatedServicesData } from "../data/services";
+
+interface Props {
+  service: ServicePageType;
+}
+
+const { service } = Astro.props;
+const ctas = resolveCTAs(service);
+const microTrust = getMicroTrust();
+const relatedServicesData = getRelatedServicesData(service.relatedServices);
+---
+
+<BaseLayout
+  title={service.seoTitle}
+  description={service.metaDescription}
+>
+  <main class="container page-pad-top" data-nt-section={`service_${service.slug}`}>
+    
+    <Breadcrumbs currentPage={service.name} />
+    
+    <ServiceHero
+      headline={service.outcomeHeadline}
+      subhead={service.postureSubhead}
+      primaryCta={ctas.primary}
+      microTrust={microTrust}
+    />
+    
+    <AudienceFit
+      audienceFit={service.audienceFit}
+      audienceNotFit={service.audienceNotFit}
+    />
+    
+    <Deliverables items={service.deliverables} />
+    
+    <ProcessTimeline steps={service.processSteps} />
+    
+    <ProofPanel items={service.proofChecklist} />
+    
+    <FAQ items={service.faq} />
+    
+    <CTABlock
+      primaryCta={ctas.primary}
+      secondaryCta={ctas.secondary}
+      microTrust={microTrust}
+    />
+    
+    <RelatedServices services={relatedServicesData} />
+    
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+</style>

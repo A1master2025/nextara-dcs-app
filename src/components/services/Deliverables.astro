@@ -1,0 +1,74 @@
+---
+/**
+ * Deliverables.astro
+ * "What you get" section with concrete artifacts.
+ * 
+ * DIOS: data-nt-section="deliverables"
+ */
+import type { Deliverable } from "../../data/services";
+
+interface Props {
+  items: Deliverable[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="deliverables" data-nt-section="deliverables">
+  <h2 class="deliverables__heading">What you get</h2>
+  <ul class="deliverables__list">
+    {items.map((item) => (
+      <li class="deliverables__item">
+        <strong class="deliverables__title">{item.title}</strong>
+        <span class="deliverables__desc">{item.description}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .deliverables {
+    margin-bottom: 3rem;
+  }
+
+  .deliverables__heading {
+    font-size: 1.5rem;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 1.5rem;
+  }
+
+  .deliverables__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .deliverables__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .deliverables__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem;
+    background: var(--brand-surface-muted, #F8FAFC);
+    border-radius: 0.375rem;
+    border: 1px solid var(--border-subtle, #E1E3E8);
+  }
+
+  .deliverables__title {
+    font-weight: 600;
+    color: var(--color-brand-primary, #0B1E3A);
+  }
+
+  .deliverables__desc {
+    font-size: 0.9375rem;
+    color: var(--text-muted, #64748B);
+    line-height: 1.5;
+  }
+</style>

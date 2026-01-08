@@ -1,0 +1,96 @@
+---
+/**
+ * FAQ.astro
+ * Expandable FAQ section using native <details> element.
+ * No JavaScript required. Accessible by default.
+ * 
+ * DIOS: data-nt-section="faq", data-nt-event="faq_expand"
+ */
+import type { FAQ as FAQType } from "../../data/services";
+
+interface Props {
+  items: FAQType[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="faq" data-nt-section="faq">
+  <h2 class="faq__heading">Frequently asked questions</h2>
+  <div class="faq__list">
+    {items.map((item, index) => (
+      <details class="faq__item" data-nt-event="faq_expand" data-faq-index={index}>
+        <summary class="faq__question">{item.question}</summary>
+        <p class="faq__answer">{item.answer}</p>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .faq {
+    margin-bottom: 3rem;
+  }
+
+  .faq__heading {
+    font-size: 1.5rem;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 1.5rem;
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .faq__item {
+    border: 1px solid var(--border-subtle, #E1E3E8);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+
+  .faq__item[open] {
+    background: var(--brand-surface-muted, #F8FAFC);
+  }
+
+  .faq__question {
+    padding: 1rem 1.25rem;
+    font-weight: 600;
+    color: var(--color-brand-primary, #0B1E3A);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__question::after {
+    content: "+";
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--text-muted, #64748B);
+    transition: transform 0.2s ease;
+  }
+
+  .faq__item[open] .faq__question::after {
+    content: "−";
+  }
+
+  .faq__question:hover {
+    background: var(--brand-surface-muted, #F8FAFC);
+  }
+
+  .faq__answer {
+    padding: 0 1.25rem 1rem;
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--text-body, #334155);
+    line-height: 1.6;
+  }
+</style>

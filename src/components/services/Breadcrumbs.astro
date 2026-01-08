@@ -1,0 +1,70 @@
+---
+/**
+ * Breadcrumbs.astro
+ * Navigation breadcrumbs for service pages.
+ * Home → Services → Current Page
+ * 
+ * DIOS: data-nt-section="breadcrumbs"
+ */
+interface Props {
+  currentPage: string;
+}
+
+const { currentPage } = Astro.props;
+---
+
+<nav class="breadcrumbs" data-nt-section="breadcrumbs" aria-label="Breadcrumb">
+  <ol class="breadcrumbs__list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Home</a>
+      <span class="breadcrumbs__sep" aria-hidden="true">→</span>
+    </li>
+    <li class="breadcrumbs__item">
+      <a href="/services/" class="breadcrumbs__link">Services</a>
+      <span class="breadcrumbs__sep" aria-hidden="true">→</span>
+    </li>
+    <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+      {currentPage}
+    </li>
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs {
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+  }
+
+  .breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .breadcrumbs__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .breadcrumbs__link {
+    color: var(--color-action, #2563EB);
+    text-decoration: none;
+  }
+
+  .breadcrumbs__link:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumbs__sep {
+    color: var(--text-muted, #64748B);
+  }
+
+  .breadcrumbs__item--current {
+    color: var(--text-muted, #64748B);
+  }
+</style>

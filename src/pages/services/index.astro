@@ -1,108 +1,206 @@
 ---
+/**
+ * Services Hub Page
+ * Lists all services with cards linking to detail pages.
+ * 
+ * Phase 4: Authority + Conversion Hardening
+ */
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/services/Breadcrumbs.astro";
+import { getAllServices, CTA_DEFAULTS } from "../../data/services";
+
+const services = getAllServices();
+const microTrust = CTA_DEFAULTS.microTrust;
 ---
 
 <BaseLayout
   title="Services — NexTara AI Solutions"
-  description="Governed digital growth systems: DCS audits, tracking governance, conversion architecture, SEO & indexing, automation, and paid media systems."
+  description="Enterprise digital credibility services. DCS audits, tracking governance, SEO systems, conversion architecture, paid media, and automation."
 >
-  <main data-nt-section="services">
-    <section class="section">
-      <div class="container page-pad-top">
-        <p class="nt-eyebrow">Services</p>
-        <h1>Governed Digital Growth Systems</h1>
-        <p>
-          We build and govern the digital system behind your business—so performance is measurable,
-          credibility is defensible, and growth is controllable.
-        </p>
-
-        <div class="cta-row">
-          <a class="btn btn-primary" href="/dcs-diagnostic/" data-nt-event="services_cta_diagnostic">
-            Run Your DCS Score
-          </a>
-          <a class="btn btn-secondary" href="/contact/" data-nt-event="services_cta_contact">
-            Request a Consultation
-          </a>
-        </div>
-      </div>
+  <main class="container page-pad-top" data-nt-section="services_hub">
+    
+    <nav class="hub-breadcrumbs" data-nt-section="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">→</span>
+      <span aria-current="page">Services</span>
+    </nav>
+    
+    <section class="hub-hero" data-nt-section="hub-hero">
+      <h1>Services</h1>
+      <p class="hub-hero__lead">
+        Governed digital systems that produce measurable credibility—not marketing promises.
+        Each service is scoped, documented, and validated.
+      </p>
     </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="nt-grid">
-          <article class="nt-card">
-            <h2>
-              <a href="/services/dcs-audits/" data-nt-event="services_card_dcs_audits">
-                DCS Audits (PromptCore)
-              </a>
-            </h2>
-            <p>Compliance-grade technical credibility verification with prioritized remediation.</p>
-          </article>
-
-          <article class="nt-card">
-            <h2>
-              <a href="/services/tracking-governance/" data-nt-event="services_card_tracking">
-                Tracking Governance
-              </a>
-            </h2>
-            <p>GTM-only instrumentation, clean analytics, event hygiene, and proof-based reporting.</p>
-          </article>
-
-          <article class="nt-card">
-            <h2>
-              <a href="/services/conversion-architecture/" data-nt-event="services_card_conversion">
-                Conversion Architecture
-              </a>
-            </h2>
-            <p>Funnels, forms, thank-you endpoints, and measurable actions tied to business outcomes.</p>
-          </article>
-
-          <article class="nt-card">
-            <h2>
-              <a href="/services/seo-indexing/" data-nt-event="services_card_seo">
-                SEO + Indexing Systems
-              </a>
-            </h2>
-            <p>Sitemaps, internal linking, crawl policy, structured data, and search visibility control.</p>
-          </article>
-
-          <article class="nt-card">
-            <h2>
-              <a href="/services/automation-ecc/" data-nt-event="services_card_automation">
-                Automation (ECC)
-              </a>
-            </h2>
-            <p>Operational automations that reduce manual work and eliminate reporting ambiguity.</p>
-          </article>
-
-          <article class="nt-card">
-            <h2>
-              <a href="/services/paid-media-systems/" data-nt-event="services_card_paid_media">
-                Paid Media Systems
-              </a>
-            </h2>
-            <p>Campaign structure + measurement discipline so spend is governed, not guessed.</p>
-          </article>
-        </div>
-      </div>
+    
+    <section class="hub-grid" data-nt-section="services-list">
+      {services.map((service) => (
+        <a 
+          href={`/services/${service.slug}/`} 
+          class="service-card"
+          data-nt-event="service_card_click"
+          data-service={service.slug}
+        >
+          <h2 class="service-card__name">{service.name}</h2>
+          <p class="service-card__outcome">{service.outcomeHeadline}</p>
+          <span class="service-card__cta">Learn more →</span>
+        </a>
+      ))}
     </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="nt-cta-card">
-          <h2>Start with proof.</h2>
-          <p>Run your DCS Score and we’ll tell you what’s real, what’s missing, and what to fix first.</p>
-
-          <div class="cta-row">
-            <a class="btn btn-primary" href="/dcs-diagnostic/" data-nt-event="services_cta_bottom_diagnostic">
-              Run Your DCS Score
-            </a>
-            <a class="btn btn-secondary" href="/contact/" data-nt-event="services_cta_bottom_contact">
-              Talk to NexTara
-            </a>
-          </div>
-        </div>
+    
+    <section class="hub-cta" data-nt-section="hub-cta">
+      <h2>Not sure where to start?</h2>
+      <p>Run the free DCS Diagnostic to see where your digital credibility stands.</p>
+      <div class="hub-cta__actions">
+        <a 
+          href="/dcs-diagnostic/" 
+          class="btn btn-primary" 
+          data-nt-event="cta_primary"
+          data-nt-location="hub"
+        >
+          Run the DCS Diagnostic
+        </a>
+        <a 
+          href="/contact/" 
+          class="btn btn-secondary" 
+          data-nt-event="cta_secondary"
+          data-nt-location="hub"
+        >
+          Request a Consultation
+        </a>
       </div>
+      <p class="hub-cta__trust">{microTrust}</p>
     </section>
+    
   </main>
 </BaseLayout>
+
+<style>
+  .hub-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+  }
+
+  .hub-breadcrumbs a {
+    color: var(--color-action, #2563EB);
+    text-decoration: none;
+  }
+
+  .hub-breadcrumbs a:hover {
+    text-decoration: underline;
+  }
+
+  .hub-breadcrumbs span:last-child {
+    color: var(--text-muted, #64748B);
+  }
+
+  .hub-hero {
+    margin-bottom: 3rem;
+  }
+
+  .hub-hero h1 {
+    font-size: 2.5rem;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 1rem;
+  }
+
+  .hub-hero__lead {
+    font-size: 1.125rem;
+    color: var(--text-muted, #64748B);
+    max-width: 640px;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .hub-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  @media (min-width: 640px) {
+    .hub-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hub-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid var(--border-subtle, #E1E3E8);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .service-card:hover {
+    border-color: var(--color-action, #2563EB);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .service-card__name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 0.5rem;
+  }
+
+  .service-card__outcome {
+    flex: 1;
+    font-size: 0.9375rem;
+    color: var(--text-muted, #64748B);
+    margin: 0 0 1rem;
+    line-height: 1.5;
+  }
+
+  .service-card__cta {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-action, #2563EB);
+  }
+
+  .hub-cta {
+    background: var(--brand-surface-muted, #F8FAFC);
+    padding: 2.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .hub-cta h2 {
+    font-size: 1.5rem;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 0.5rem;
+  }
+
+  .hub-cta > p {
+    font-size: 1rem;
+    color: var(--text-muted, #64748B);
+    margin: 0 0 1.5rem;
+  }
+
+  .hub-cta__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .hub-cta__trust {
+    font-size: 0.875rem;
+    color: var(--text-muted, #64748B);
+    margin: 0;
+  }
+</style>

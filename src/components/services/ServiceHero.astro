@@ -1,0 +1,77 @@
+---
+/**
+ * ServiceHero.astro
+ * Hero section with outcome headline, governance posture, and primary CTA.
+ * 
+ * DIOS: data-nt-section="service-hero"
+ */
+import type { CTA } from "../../data/services";
+
+interface Props {
+  headline: string;
+  subhead: string;
+  primaryCta: CTA;
+  microTrust: string;
+}
+
+const { headline, subhead, primaryCta, microTrust } = Astro.props;
+---
+
+<section class="service-hero" data-nt-section="service-hero">
+  <h1 class="service-hero__headline">{headline}</h1>
+  <p class="service-hero__subhead">{subhead}</p>
+  
+  <div class="service-hero__cta">
+    <a 
+      href={primaryCta.href} 
+      class="btn btn-primary" 
+      data-nt-event="cta_primary"
+      data-nt-location="hero"
+    >
+      {primaryCta.label}
+    </a>
+    <p class="service-hero__trust">{microTrust}</p>
+  </div>
+</section>
+
+<style>
+  .service-hero {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-subtle, #E1E3E8);
+  }
+
+  .service-hero__headline {
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--color-brand-primary, #0B1E3A);
+    margin: 0 0 1rem;
+    max-width: 720px;
+  }
+
+  .service-hero__subhead {
+    font-size: 1.125rem;
+    color: var(--text-muted, #64748B);
+    margin: 0 0 1.5rem;
+    max-width: 640px;
+  }
+
+  .service-hero__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .service-hero__trust {
+    font-size: 0.875rem;
+    color: var(--text-muted, #64748B);
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .service-hero__headline {
+      font-size: 2.5rem;
+    }
+  }
+</style>
