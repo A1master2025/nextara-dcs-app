@@ -102,18 +102,18 @@ const schemaGraph = [...baseGraph, ...extraGraph];
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="NexTara AI Solutions" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
-    {ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="NexTara AI Solutions" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content="https://nextara-ai-solutions.com/og/og-1200x630.png" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content={ogImageAbs ? "summary_large_image" : "summary"} />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content="https://nextara-ai-solutions.com/og/og-1200x630.png" />
 
     <!-- Structured Data (Phase 5: centralized @graph) -->
     <StructuredData graph={schemaGraph} />
