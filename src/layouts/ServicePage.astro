@@ -3,8 +3,9 @@
  * ServicePage.astro
  * Standardized layout for all /services/<slug>/ pages.
  * Consumes ServicePage objects from registry.
- * 
+ *
  * Phase 4: Authority + Conversion Hardening
+ * Phase 5: Added BreadcrumbList + Service structured data
  */
 import BaseLayout from "./BaseLayout.astro";
 import Breadcrumbs from "../components/services/Breadcrumbs.astro";
@@ -20,6 +21,10 @@ import RelatedServices from "../components/services/RelatedServices.astro";
 import type { ServicePage as ServicePageType } from "../data/services";
 import { resolveCTAs, getMicroTrust, getRelatedServicesData } from "../data/services";
 
+// Phase 5: Schema imports
+import type { GraphNode } from "../components/seo/StructuredData.astro";
+import { buildBreadcrumbList, buildService } from "../lib/schema/nodes";
+
 interface Props {
   service: ServicePageType;
 }
@@ -28,44 +33,65 @@ const { service } = Astro.props;
 const ctas = resolveCTAs(service);
 const microTrust = getMicroTrust();
 const relatedServicesData = getRelatedServicesData(service.relatedServices);
+
+// Phase 5: Build page-specific schema nodes
+// Origin must match Layout.astro's CANONICAL_ORIGIN
+const CANONICAL_ORIGIN = "https://nextara-ai-solutions.com";
+
+// BreadcrumbList matches visible Breadcrumbs component: Home → Services → {Service Name}
+const breadcrumbSchema = buildBreadcrumbList(CANONICAL_ORIGIN, [
+  { name: "Home", url: "/" },
+  { name: "Services", url: "/services" },
+  { name: service.name, url: `/services/${service.slug}` },
+]);
+
+// Service schema using registry data
+const serviceSchema = buildService(CANONICAL_ORIGIN, {
+  slug: service.slug,
+  name: service.name,
+  description: service.metaDescription,
+});
+
+const extraGraph: GraphNode[] = [breadcrumbSchema, serviceSchema];
 ---
 
 <BaseLayout
   title={service.seoTitle}
   description={service.metaDescription}
+  extraGraph={extraGraph}
 >
   <main class="container page-pad-top" data-nt-section={`service_${service.slug}`}>
-    
+
     <Breadcrumbs currentPage={service.name} />
-    
+
     <ServiceHero
       headline={service.outcomeHeadline}
       subhead={service.postureSubhead}
       primaryCta={ctas.primary}
       microTrust={microTrust}
     />
-    
+
     <AudienceFit
       audienceFit={service.audienceFit}
       audienceNotFit={service.audienceNotFit}
     />
-    
+
     <Deliverables items={service.deliverables} />
-    
+
     <ProcessTimeline steps={service.processSteps} />
-    
+
     <ProofPanel items={service.proofChecklist} />
-    
+
     <FAQ items={service.faq} />
-    
+
     <CTABlock
       primaryCta={ctas.primary}
       secondaryCta={ctas.secondary}
       microTrust={microTrust}
     />
-    
+
     <RelatedServices services={relatedServicesData} />
-    
+
   </main>
 </BaseLayout>
 

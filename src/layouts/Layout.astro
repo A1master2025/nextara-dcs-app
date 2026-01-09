@@ -1,6 +1,9 @@
 ---
 import "../styles/global.css";
 import TelemetryInit from "../components/TelemetryInit.astro";
+import StructuredData from "../components/seo/StructuredData.astro";
+import type { GraphNode } from "../components/seo/StructuredData.astro";
+import { buildOrganization, buildWebSite, buildWebPage } from "../lib/schema/nodes";
 
 /**
  * MVIG (Minimum Viable Indexing Gate)
@@ -8,7 +11,11 @@ import TelemetryInit from "../components/TelemetryInit.astro";
  * - Non-prod hosts: noindex,nofollow (defensive, no overrides allowed).
  * - Prod host: index,follow by default.
  * - Per-page robots override supported on prod only (e.g., /dcs-diagnostic/ => noindex,follow).
- * - Adds canonical, meta description, OG/Twitter, and minimal JSON-LD (Organization/WebSite/WebPage).
+ * - Adds canonical, meta description, OG/Twitter, and structured data via StructuredData component.
+ *
+ * Phase 5 Update:
+ * - Schema now uses centralized StructuredData component with @graph structure
+ * - Supports extraGraph prop for page-specific schema (BreadcrumbList, Service, etc.)
  */
 
 interface Props {
@@ -16,6 +23,8 @@ interface Props {
   description?: string;
   ogImagePath?: string;
   robots?: string;
+  /** Additional schema nodes from child layouts (BreadcrumbList, Service, ItemList) */
+  extraGraph?: GraphNode[];
 }
 
 const {
@@ -23,7 +32,9 @@ const {
   description: pageDescription,
   ogImagePath,
   robots: robotsOverride,
+  extraGraph = [],
 } = Astro.props;
+
 // Production origin is the canonical source of truth
 const CANONICAL_ORIGIN = "https://nextara-ai-solutions.com";
 
@@ -58,36 +69,20 @@ const description = pageDescription || DEFAULT_DESCRIPTION;
 // Optional OG image
 const ogImageAbs = ogImagePath ? new URL(ogImagePath, CANONICAL_ORIGIN).toString() : undefined;
 
-// Minimal schema only (MVIG scope)
-const schema = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${CANONICAL_ORIGIN}/#org`,
-    "name": "NexTara AI Solutions",
-    "url": CANONICAL_ORIGIN,
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${CANONICAL_ORIGIN}/#website`,
-    "name": "NexTara AI Solutions",
-    "url": CANONICAL_ORIGIN,
-    "inLanguage": "en",
-    "publisher": { "@id": `${CANONICAL_ORIGIN}/#org` },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${canonicalUrl}#webpage`,
-    "url": canonicalUrl,
-    "name": title,
-    "description": description,
-    "isPartOf": { "@id": `${CANONICAL_ORIGIN}/#website` },
-    "about": { "@id": `${CANONICAL_ORIGIN}/#org` },
-    "inLanguage": "en",
-  },
+// Phase 5: Build schema graph using centralized node builders
+const baseGraph: GraphNode[] = [
+  buildOrganization(CANONICAL_ORIGIN),
+  buildWebSite(CANONICAL_ORIGIN),
+  buildWebPage({
+    origin: CANONICAL_ORIGIN,
+    path: normalizedPath,
+    title,
+    description,
+  }),
 ];
+
+// Merge base graph with page-specific nodes (deduplication handled by StructuredData)
+const schemaGraph = [...baseGraph, ...extraGraph];
 ---
 
 <!doctype html>
@@ -120,8 +115,8 @@ const schema = [
     <meta name="twitter:description" content={description} />
     {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
 
-    <!-- Structured Data (MVIG minimal) -->
-    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+    <!-- Structured Data (Phase 5: centralized @graph) -->
+    <StructuredData graph={schemaGraph} />
 
     <!-- Google Tag Manager (UNCHANGED) -->
     <script>

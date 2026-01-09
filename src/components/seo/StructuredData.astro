@@ -1,0 +1,51 @@
+---
+/**
+ * StructuredData — Single JSON-LD Injection Point
+ * src/components/seo/StructuredData.astro
+ *
+ * Phase 5 — Structured Data + Indexing Maturity
+ *
+ * CRITICAL CONSTRAINTS:
+ * 1. Only ONE instance per page (BaseLayout is the sole consumer)
+ * 2. Deduplicates nodes by @id before rendering
+ * 3. Outputs single <script type="application/ld+json"> with @graph
+ */
+
+export interface GraphNode {
+  "@type": string;
+  "@id"?: string;
+  [key: string]: unknown;
+}
+
+export interface Props {
+  graph: GraphNode[];
+}
+
+const { graph } = Astro.props;
+
+// Deduplicate by @id (last occurrence wins)
+function dedupeByIdCausal(nodes: Props["graph"]): Props["graph"] {
+  const seen = new Map<string, (typeof nodes)[number]>();
+  let anon = 0;
+  for (const node of nodes) {
+    const id = typeof node["@id"] === "string" ? node["@id"] : null;
+    if (id) {
+      seen.set(id, node);
+    } else {
+      seen.set(`__anon_${anon++}`, node);
+    }
+  }
+  return Array.from(seen.values());
+}
+
+const dedupedGraph = dedupeByIdCausal(graph);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": dedupedGraph,
+};
+
+const jsonLdString = JSON.stringify(jsonLd);
+---
+
+<script type="application/ld+json" set:html={jsonLdString} />

@@ -2,29 +2,57 @@
 /**
  * Services Hub Page
  * Lists all services with cards linking to detail pages.
- * 
+ *
  * Phase 4: Authority + Conversion Hardening
+ * Phase 5: Added BreadcrumbList + ItemList structured data
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/services/Breadcrumbs.astro";
 import { getAllServices, CTA_DEFAULTS } from "../../data/services";
 
+// Phase 5: Schema imports
+import type { GraphNode } from "../../components/seo/StructuredData.astro";
+import { buildBreadcrumbList, buildItemList } from "../../lib/schema/nodes";
+
 const services = getAllServices();
 const microTrust = CTA_DEFAULTS.microTrust;
+
+// Phase 5: Build page-specific schema nodes
+// Origin must match Layout.astro's CANONICAL_ORIGIN
+const CANONICAL_ORIGIN = "https://nextara-ai-solutions.com";
+
+// BreadcrumbList matches visible breadcrumbs: Home → Services
+const breadcrumbSchema = buildBreadcrumbList(CANONICAL_ORIGIN, [
+  { name: "Home", url: "/" },
+  { name: "Services", url: "/services" },
+]);
+
+// ItemList representing the 6 services (uses registry ordering)
+const itemListSchema = buildItemList(
+  CANONICAL_ORIGIN,
+  services.map((s) => ({
+    slug: s.slug,
+    name: s.name,
+    description: s.metaDescription,
+  }))
+);
+
+const extraGraph: GraphNode[] = [breadcrumbSchema, itemListSchema];
 ---
 
 <BaseLayout
   title="Services — NexTara AI Solutions"
   description="Enterprise digital credibility services. DCS audits, tracking governance, SEO systems, conversion architecture, paid media, and automation."
+  extraGraph={extraGraph}
 >
   <main class="container page-pad-top" data-nt-section="services_hub">
-    
+
     <nav class="hub-breadcrumbs" data-nt-section="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span aria-hidden="true">→</span>
       <span aria-current="page">Services</span>
     </nav>
-    
+
     <section class="hub-hero" data-nt-section="hub-hero">
       <h1>Services</h1>
       <p class="hub-hero__lead">
@@ -32,11 +60,11 @@ const microTrust = CTA_DEFAULTS.microTrust;
         Each service is scoped, documented, and validated.
       </p>
     </section>
-    
+
     <section class="hub-grid" data-nt-section="services-list">
       {services.map((service) => (
-        <a 
-          href={`/services/${service.slug}/`} 
+        <a
+          href={`/services/${service.slug}/`}
           class="service-card"
           data-nt-event="service_card_click"
           data-service={service.slug}
@@ -47,22 +75,22 @@ const microTrust = CTA_DEFAULTS.microTrust;
         </a>
       ))}
     </section>
-    
+
     <section class="hub-cta" data-nt-section="hub-cta">
       <h2>Not sure where to start?</h2>
       <p>Run the free DCS Diagnostic to see where your digital credibility stands.</p>
       <div class="hub-cta__actions">
-        <a 
-          href="/dcs-diagnostic/" 
-          class="btn btn-primary" 
+        <a
+          href="/dcs-diagnostic/"
+          class="btn btn-primary"
           data-nt-event="cta_primary"
           data-nt-location="hub"
         >
           Run the DCS Diagnostic
         </a>
-        <a 
-          href="/contact/" 
-          class="btn btn-secondary" 
+        <a
+          href="/contact/"
+          class="btn btn-secondary"
           data-nt-event="cta_secondary"
           data-nt-location="hub"
         >
@@ -71,7 +99,7 @@ const microTrust = CTA_DEFAULTS.microTrust;
       </div>
       <p class="hub-cta__trust">{microTrust}</p>
     </section>
-    
+
   </main>
 </BaseLayout>
 
