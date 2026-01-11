@@ -8,7 +8,9 @@ interface Props {
   title?: string;
   description?: string;
   ogImagePath?: string;
-  robots?: string; // optional per-page override (prod only)
+  robots?: string;
+  /** Optional: page-specific schema nodes (BreadcrumbList, Service, ItemList, etc.) */
+  extraGraph?: Record<string, any>[];
 }
 
 const {
@@ -16,24 +18,20 @@ const {
   description: pageDescription,
   ogImagePath,
   robots: robotsOverride,
+  extraGraph = [],
 } = Astro.props;
 
-// Canonical origin is production source-of-truth
+// Canonical origin is the single source of truth
 const CANONICAL_ORIGIN = "https://nextara-ai-solutions.com";
 
-// Netlify build context gate
-const netlifyContext = process.env.CONTEXT; // production | deploy-preview | branch-deploy | undefined
-const isProdDeploy = netlifyContext ? netlifyContext === "production" : import.meta.env.PROD;
+// Netlify build context gating
+const netlifyContext = process.env.CONTEXT ?? "local"; // production | deploy-preview | branch-deploy | local
+const isProdDeploy = netlifyContext === "production";
 
-// Canonical path normalization (trailing slash for route paths)
-const rawPath = Astro.url?.pathname || "/";
-const normalizedPath =
-  rawPath.includes(".") ? rawPath : (rawPath.endsWith("/") ? rawPath : `${rawPath}/`);
-
-const canonicalUrl = new URL(normalizedPath, CANONICAL_ORIGIN).toString();
-
-// Robots gate (non-prod is always noindex,nofollow)
+// Robots policy
 const defaultRobots = isProdDeploy ? "index,follow" : "noindex,nofollow";
+// Non-prod: always noindex,nofollow (no override)
+// Prod: allow per-page override if provided
 const robots = isProdDeploy ? (robotsOverride ?? defaultRobots) : defaultRobots;
 
 // Defaults
@@ -44,44 +42,52 @@ const DEFAULT_DESCRIPTION =
 const title = pageTitle || DEFAULT_TITLE;
 const description = pageDescription || DEFAULT_DESCRIPTION;
 
-// OG image
+// Canonical URL (always production origin)
+const rawPath = Astro.url?.pathname || "/";
+const normalizedPath =
+  rawPath.includes(".") ? rawPath : rawPath.endsWith("/") ? rawPath : `${rawPath}/`;
+
+const canonicalUrl = new URL(normalizedPath, CANONICAL_ORIGIN).toString();
+
+// Optional OG image (absolute)
 const ogImageAbs = ogImagePath
   ? new URL(ogImagePath, CANONICAL_ORIGIN).toString()
   : "https://nextara-ai-solutions.com/og/og-1200x630.png";
 
-// JSON-LD as REAL JSON (string), rendered via set:html (no template leakage)
+// Build JSON-LD as REAL JSON (no template leakage)
 const schemaObject = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Organization",
       "@id": `${CANONICAL_ORIGIN}/#organization`,
-      "name": "NexTara AI Solutions",
-      "url": `${CANONICAL_ORIGIN}/`,
-      "description":
+      name: "NexTara AI Solutions",
+      url: `${CANONICAL_ORIGIN}/`,
+      description:
         "SEO, Google Ads, and content marketing for small and medium businesses—built to turn visibility into qualified leads and measurable ROI.",
-      "contactPoint": {
+      contactPoint: {
         "@type": "ContactPoint",
-        "contactType": "customer support",
-        "url": `${CANONICAL_ORIGIN}/contact/`,
+        contactType: "customer support",
+        url: `${CANONICAL_ORIGIN}/contact/`,
       },
     },
     {
       "@type": "WebSite",
       "@id": `${CANONICAL_ORIGIN}/#website`,
-      "url": `${CANONICAL_ORIGIN}/`,
-      "name": "NexTara AI Solutions",
-      "publisher": { "@id": `${CANONICAL_ORIGIN}/#organization` },
+      url: `${CANONICAL_ORIGIN}/`,
+      name: "NexTara AI Solutions",
+      publisher: { "@id": `${CANONICAL_ORIGIN}/#organization` },
     },
     {
       "@type": "WebPage",
       "@id": `${canonicalUrl}#webpage`,
-      "url": canonicalUrl,
-      "name": title,
-      "description": description,
-      "isPartOf": { "@id": `${CANONICAL_ORIGIN}/#website` },
-      "publisher": { "@id": `${CANONICAL_ORIGIN}/#organization` },
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { "@id": `${CANONICAL_ORIGIN}/#website` },
+      publisher: { "@id": `${CANONICAL_ORIGIN}/#organization` },
     },
+    ...extraGraph,
   ],
 };
 
@@ -96,12 +102,15 @@ const schemaJson = JSON.stringify(schemaObject);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Robots -->
     <meta name="robots" content={robots} />
 
+    <!-- Core SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
 
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="NexTara AI Solutions" />
     <meta property="og:title" content={title} />
@@ -109,12 +118,19 @@ const schemaJson = JSON.stringify(schemaObject);
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageAbs} />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbs} />
 
+    <!-- Structured Data (centralized @graph) -->
     <script type="application/ld+json" set:html={schemaJson}></script>
+
+    <!-- DIOS foundation: always have a dataLayer available -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+    </script>
 
     <!-- Google Tag Manager (UNCHANGED) -->
     <script>
@@ -130,10 +146,6 @@ const schemaJson = JSON.stringify(schemaObject);
       })(window, document, "script", "dataLayer", "GTM-N6HDR6L7");
     </script>
     <!-- End Google Tag Manager -->
-
-    <script>
-      window.dataLayer = window.dataLayer || [];
-    </script>
   </head>
 
   <body>
