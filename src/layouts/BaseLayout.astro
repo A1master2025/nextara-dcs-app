@@ -13,8 +13,6 @@
  * - Added extraGraph passthrough for page-specific schema nodes
  */
 import Layout from "./Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
 import type { GraphNode } from "../components/seo/StructuredData.astro";
 
 interface Props {
@@ -62,7 +60,5 @@ const {
   robots={robots}
   extraGraph={extraGraph}
 >
-  {!hideHeader && <Header />}
   <slot />
-  {!hideFooter && <Footer />}
 </Layout>
