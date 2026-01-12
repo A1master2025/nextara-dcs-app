@@ -13,6 +13,7 @@
 // ============================================================
 
 export const SERVICE_SLUGS = [
+  "growth-blocker-audit",
   "dcs-audits",
   "tracking-governance",
   "seo-indexing",
@@ -110,6 +111,63 @@ export const CTA_DEFAULTS = {
 // ============================================================
 
 export const SERVICES: Record<ServiceSlug, ServicePage> = {
+  "growth-blocker-audit": {
+    slug: "growth-blocker-audit",
+    order: 0,
+    name: "Growth Blocker Audit",
+    seoTitle: "Growth Blocker Audit — NexTara AI Solutions",
+    metaDescription: "A 30-minute audit that shows where your website, SEO, and tracking are leaking leads and money—plus the top 3 fixes to prioritize.",
+    outcomeHeadline: "Find out what's blocking your leads—in one short call.",
+    postureSubhead: "A fast, focused audit that shows exactly where you're leaking leads and money.",
+    audienceFit: [
+      "You're getting traffic but not enough calls or form fills",
+      "You're spending on ads or SEO but can't tell if it's working",
+      "You suspect your website isn't pulling its weight—but you're not sure why",
+      "You want an outside set of eyes before committing to anything big",
+    ],
+    audienceNotFit: [
+      "Anyone looking for a full technical SEO crawl or deep keyword research",
+      "Businesses not ready to act on findings within 30–60 days",
+    ],
+    deliverables: [
+      { title: "Live Screen-Share Audit", description: "30 minutes together (or recorded) reviewing your digital presence" },
+      { title: "Video Walkthrough", description: "8–12 minute recording of exactly what we found, in plain English" },
+      { title: "1-Page Summary", description: "What's Working / What's Broken / Top 3 Fixes" },
+      { title: "Clear Next Step", description: "Full audit, engagement, or fix-it-yourself guidance" },
+    ],
+    processSteps: [
+      { step: 1, title: "Book", description: "Schedule your 30-minute audit slot." },
+      { step: 2, title: "Quick Intake", description: "Share your site URL, top concerns, and what success looks like." },
+      { step: 3, title: "Live Audit", description: "We review your search presence, site, tracking, and one competitor—together or recorded." },
+      { step: 4, title: "Delivery", description: "Receive your video walkthrough and 1-page summary within 48 hours." },
+      { step: 5, title: "Decision", description: "Choose your next step: go deeper, engage, or DIY with what you learned." },
+    ],
+    proofChecklist: [
+      { label: "Search Presence", detail: "Are you showing up in Google—and for what?" },
+      { label: "First Impression", detail: "Is it obvious what you do and what to do next in 5 seconds?" },
+      { label: "Top Pages", detail: "Are your landing pages converting or leaking leads?" },
+      { label: "Tracking Health", detail: "Is GA/GTM firing correctly? Are conversions counted?" },
+      { label: "Google Business Profile", detail: "Claimed, accurate, complete, and credible?" },
+      { label: "Quick Win", detail: "One fix you can act on this week" },
+    ],
+    faq: [
+      { question: "How long does it take?", answer: "30 minutes of your time. You'll receive the video and 1-page summary within 48 hours." },
+      { question: "Is this a sales call?", answer: "No. It's a real audit. We show you what's broken. If you want help fixing it, we'll talk options. If not, you keep everything." },
+      { question: "What if I already know what's wrong?", answer: "Then skip this and go straight to our DCS Audit for the full diagnostic and prioritized fix plan." },
+      { question: "What happens after?", answer: "You get a 1-page summary plus video. If you want to go deeper, the next step is typically a DCS Audit or monthly engagement. Your $297 is credited either way." },
+      { question: "What if we're not a fit?", answer: "We'll tell you directly. You still get actionable findings and a clear picture of what's broken." },
+      { question: "How is this different from a free audit tool?", answer: "Free tools check surface metrics. We look at your actual lead flow, trust signals, and conversion gaps—things tools can't see." },
+    ],
+    primaryCta: {
+      label: "Book Your Growth Blocker Audit — $297",
+      href: "/contact/?service=growth-blocker-audit",
+    },
+    secondaryCta: {
+      label: "See the Full DCS Audit",
+      href: "/services/dcs-audits/",
+    },
+    relatedServices: ["dcs-audits", "tracking-governance", "seo-indexing"],
+  },
   "dcs-audits": {
     slug: "dcs-audits",
     order: 1,
